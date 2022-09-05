@@ -1,2 +1,4 @@
 name: ActivityAlerts
 main: cafe.navy.activityalerts.ActivityAlertsPlugin
+version: 1.0.0
+api-version: 1.19
