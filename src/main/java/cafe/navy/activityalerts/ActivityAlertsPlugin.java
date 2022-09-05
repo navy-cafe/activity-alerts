@@ -26,7 +26,7 @@ public class ActivityAlertsPlugin extends JavaPlugin implements Listener {
     private final @NonNull SessionManager sessionManager;
     private @MonotonicNonNull PaperCommandManager<CommandSender> manager;
 
-    private ActivityAlertsPlugin() {
+    public ActivityAlertsPlugin() {
         this.sessionManager = new SessionManager(this);
     }
 
