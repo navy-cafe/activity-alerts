@@ -1,8 +1,6 @@
 package cafe.navy.activityalerts;
 
-import cafe.navy.bedrock.paper.core.message.Colours;
 import cafe.navy.bedrock.paper.core.message.Message;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.Tag;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
@@ -17,6 +15,13 @@ import java.util.Iterator;
 import java.util.List;
 
 public class ChatAlert implements Alert {
+
+    public static @NonNull ChatAlert of(final @NonNull List<String> template,
+                                        final @NonNull Duration minDelay,
+                                        final @NonNull Duration maxDelay,
+                                        final @NonNull MiniMessage miniMessage) {
+        return new ChatAlert(template, minDelay, maxDelay, miniMessage);
+    }
 
     private final @NonNull List<String> template;
     private final @NonNull Duration minDelay;

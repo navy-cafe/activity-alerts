@@ -6,8 +6,8 @@ import cafe.navy.bedrock.paper.core.message.Messages;
 import cloud.commandframework.Command;
 import cloud.commandframework.execution.AsynchronousCommandExecutionCoordinator;
 import cloud.commandframework.paper.PaperCommandManager;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -19,6 +19,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.time.Duration;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -42,6 +44,25 @@ public class ActivityAlertsPlugin extends JavaPlugin implements Listener {
     public void onEnable() {
         this.getServer().getPluginManager().registerEvents(this, this);
         this.setupCommands();
+        this.sessionManager.registerAlert(ChatAlert.of(
+                List.of(
+                        "Hey! You've been playing for <time>.",
+                        "Consider taking 15 minutes to stretch your muscles."
+                ),
+                Duration.ofSeconds(2),
+                Duration.ofSeconds(4),
+                MiniMessage.miniMessage()
+        ));
+
+        this.sessionManager.registerAlert(ChatAlert.of(
+                List.of(
+                        "Hey! You've been playing for <time>.",
+                        "The CDC recommends XXX."
+                ),
+                Duration.ofSeconds(10),
+                Duration.ofSeconds(15),
+                MiniMessage.miniMessage()
+        ));
     }
 
     @EventHandler

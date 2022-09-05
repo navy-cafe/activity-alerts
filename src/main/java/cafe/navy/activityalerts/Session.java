@@ -1,7 +1,6 @@
 package cafe.navy.activityalerts;
 
 import cafe.navy.bedrock.paper.core.util.NumberUtil;
-import com.sun.jna.platform.win32.Netapi32Util;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -37,10 +36,8 @@ public class Session {
         return Duration.between(this.start, Instant.now());
     }
 
-    public void addAlert(final @NonNull ChatAlert alert,
-                         final @NonNull Duration minDuration,
-                         final @NonNull Duration maxDuration) {
-        final long millis = NumberUtil.between(minDuration.toMillis(), maxDuration.toMillis()) * 20L;
+    public void addAlert(final @NonNull ChatAlert alert) {
+        final long ticks = NumberUtil.between(alert.minDelay().toSeconds(), alert.maxDelay().toSeconds()) * 20L;
         final Session ref = this;
         final BukkitTask task = new BukkitRunnable() {
             @Override
@@ -48,7 +45,7 @@ public class Session {
                 alert.send(ref);
                 alerts.remove(alert);
             }
-        }.runTaskLater(this.plugin, millis);
+        }.runTaskLater(this.plugin, ticks);
         this.alerts.put(alert, task);
     }
 
