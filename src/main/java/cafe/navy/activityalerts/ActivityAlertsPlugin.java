@@ -6,6 +6,9 @@ import cafe.navy.bedrock.paper.core.message.Messages;
 import cloud.commandframework.Command;
 import cloud.commandframework.execution.AsynchronousCommandExecutionCoordinator;
 import cloud.commandframework.paper.PaperCommandManager;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextDecoration;
+import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,6 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 /**
@@ -69,13 +73,18 @@ public class ActivityAlertsPlugin extends JavaPlugin implements Listener {
                 .literal("version")
                 .handler(ctx -> {
                     final CommandSender sender = ctx.getSender();
-                    sender.sendMessage(Messages.createVersionMessage(
-                            Message.create().gradient("ActivityAlerts", Colours.Dark.RED, Colours.Light.RED),
-                            Message.create().highlight("1.0.0"),
-                            Message.create().main("Get support in the ")
-                                    .link("navy.cafe Discord", "https://chat.navy.cafe"),
-                            Message.create().link("bluely", "kaden.sh")
-                    ));
+                    sender.sendMessage(Message.create()
+                            .newline()
+                            .text(Messages.createVersionMessage(
+                                    Message.create().gradient("ActivityAlerts", Colours.Dark.RED, Colours.Light.RED, TextDecoration.BOLD, TextDecoration.ITALIC),
+                                    Message.create().text("1.0.0", Colours.Light.GREEN, TextDecoration.BOLD),
+                                    Message.create().main("Get support in the ")
+                                            .link("navy.cafe Discord", "https://chat.navy.cafe")
+                                            .asComponent()
+                                            .decorate(TextDecoration.ITALIC),
+                                    Message.create().link("bluely", "kaden.sh")
+                            ))
+                            .newline());
                 }));
 
         this.manager.command(this.manager
@@ -89,7 +98,26 @@ public class ActivityAlertsPlugin extends JavaPlugin implements Listener {
                         return;
                     }
 
+                    final Optional<Session> opt = this.sessionManager.getSession(player.getUniqueId());
+                    if (opt.isEmpty()) {
+                        sender.sendMessage(Messages
+                                .createError()
+                                .main("No session was found."));
+                        return;
+                    }
 
+                    final Session session = opt.get();
+                    final String time = DurationFormatUtils.formatDurationWords(
+                            session.playtime().toMillis(),
+                            true,
+                            true
+                    );
+
+                    sender.sendMessage(Message
+                            .create()
+                            .main("You have played for ")
+                            .highlight(time)
+                            .main(" during this session."));
                 })
         );
     }
