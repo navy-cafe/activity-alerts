@@ -43,7 +43,7 @@ public class Session {
     public void addAlert(final @NonNull Alert alert,
                          final @NonNull Duration min,
                          final @NonNull Duration max) {
-        final long ticks = NumberUtil.between(min.toSeconds(), max.toSeconds()) * 20L;
+        final long ticks = (min.equals(max) ? min.getSeconds() : NumberUtil.between(min.toSeconds(), max.toSeconds())) * 20L;
         final Session ref = this;
         final BukkitTask task = new BukkitRunnable() {
             @Override
