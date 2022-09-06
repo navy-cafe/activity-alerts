@@ -36,7 +36,6 @@ public class SessionManager {
         this.sessions.put(uuid, session);
 
         for (final AlertTimes time : this.times) {
-            System.out.println("Adding alert to session "+uuid+": "+time.minDelay+"-"+time.maxDelay);
             session.addAlert(NumberUtil.choice(this.alerts), time.minDelay, time.maxDelay);
         }
     }
