@@ -2,18 +2,13 @@ package cafe.navy.activityalerts.config;
 
 import cafe.navy.activityalerts.alert.Alert;
 import cafe.navy.activityalerts.alert.ChatAlert;
-import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bukkit.craftbukkit.v1_19_R1.configuration.ConfigSerializationUtil;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.serialize.TypeSerializer;
-import oshi.util.tuples.Pair;
 
 import java.lang.reflect.Type;
-import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,7 +40,7 @@ public class AlertTypeSerializer implements TypeSerializer<Alert> {
             return;
         }
 
-        throw new RuntimeException("Unable to serialize type "+type);
+        throw new RuntimeException("Unable to serialize type " + type);
     }
 
 }
